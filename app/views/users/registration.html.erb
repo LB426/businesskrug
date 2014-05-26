@@ -1,0 +1,47 @@
+<div id="form_page">
+  <h3>Регистрация пользователя</h3>
+  <%= form_for @user, :url => user_create_path, :html => { :multipart => true, :method => :post } do |f| %>
+    <% if @user.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@user.errors.count, "error") %> при регистрации пользователя</h2>
+        <ul>
+        <% @user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <ul>
+      <li><span>Псевдоним пользователя:</span>
+          <%= f.text_field :nick %></li>
+      <li><span>Населённый пункт:</span>
+          <%= f.text_field :locality %></li>
+      <li><span>Дата рождения:</span>
+          <%= f.text_field :birthday, :value => "2014-01-01" %></li>
+      <li id="sex">
+          <span>Пол:</span>
+          <%= f.radio_button :gender, "man" %> М | 
+          <%= f.radio_button :gender, "woman" %> Ж
+      </li>
+      <li><span>Тел:</span>
+          <%= f.text_field :phone %></li>
+      <li><span>e-mail:</span>
+          <%= f.text_field :email %></li>
+      <li><span>Аватарка:<br><%= image_tag @user.avatar.url(:thumb), :width => "55px" %></span>
+      <%= f.file_field :avatar %>
+    </ul>
+    <%= f.submit "Зарегистрироваться", :id => "submit_but" %>
+  <% end %>
+</div>
+
+<% content_for :head do %>
+  <script src="/javascripts/jquery.ui.core.js"></script>
+  <script src="/javascripts/jquery.ui.widget.js"></script>
+  <script src="/javascripts/jquery.ui.position.js"></script>
+  <script src="/javascripts/jquery.ui.menu.js"></script>
+  <script src="/javascripts/jquery.ui.autocomplete.js"></script>
+  <script src="/javascripts/jquery.ui.datepicker.js"></script>
+  <script src="/javascripts/jquery.ui.datepicker-ru.js"></script>
+  <script src="/javascripts/registration.js"></script>
+<% end %>
+

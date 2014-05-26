@@ -1,0 +1,42 @@
+<p>
+  <strong>Name:</strong>
+  <%= @catalog.name %>
+</p>
+
+<p>
+  <strong>Locality:</strong>
+  <%= @catalog.locality %>
+</p>
+
+<p>
+  <strong>Addr:</strong>
+  <%= @catalog.addr %>
+</p>
+
+<p>
+  <strong>Phone:</strong>
+  <%= @catalog.phone %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @catalog.email %>
+</p>
+
+<p>
+  <strong>Siteurl:</strong>
+  <%= @catalog.siteurl %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @catalog.description %>
+</p>
+
+<p>
+  <strong>Biztype:</strong>
+  <%= @catalog.biztype %>
+</p>
+
+<%= link_to 'Edit', edit_catalog_path(@catalog) %> |
+<%= link_to 'Back', catalogs_path %>

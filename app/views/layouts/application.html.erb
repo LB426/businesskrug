@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Бизнес круг</title>
+  <link rel="stylesheet" href="/stylesheets/main.css">
+  <link rel="stylesheet" href="/stylesheets/ui/jquery.ui.all.css">
+  <script src="/javascripts/jquery-1.11.0.min.js"></script>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= yield :head %>
+  <%= csrf_meta_tags %>
+  <script type="text/javascript">
+     var form_authenticity_token = '<%= form_authenticity_token %>' ;
+  </script>
+</head>
+<body>
+<div id="wrap">
+  <%= render 'layouts/header' %>
+  <%= render 'layouts/left_side' %>
+  <div id="right_side">
+    <div id="content">
+      <%= render 'layouts/notice' %>
+      <%= yield %>
+    </div>
+  </div>
+</div>
+</body>
+</html>

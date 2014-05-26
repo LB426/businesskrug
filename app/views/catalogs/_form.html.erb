@@ -1,0 +1,66 @@
+<%= form_for(@catalog) do |f| %>
+  <% if @catalog.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@catalog.errors.count, "error") %> prohibited this catalog from being saved:</h2>
+      <ul>
+      <% @catalog.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <ul>
+    <li><span>Название каталога:</span>
+        <%= f.text_field :name %> </li>
+    <li><span>Тип бизнеса:</span>
+        <%= f.text_field :biztype %> </li>
+    <li>Выберите раздел или разделы к которым относится ваш бизнес:<br/>
+      <div id="razdel">
+        <% Section.all.each do |section| %>
+          <h4><%= section.name -%></h4>
+          <% Subsection.where(section_id: section.id).each do |subsection| %>
+            <div>
+              <input type="checkbox" name="sec_and_sub_sec[<%= section.id %>[<%= subsection.id %>]]"><%= subsection.name %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </li>
+    <li><span>Описание бизнеса:</span>
+        <%= f.text_area :description %> </li>
+    <li><span>Населённый пункт:</span>
+        <%= f.text_field :locality %> </li>
+    <li><span>Адрес:</span>
+        <%= f.text_field :addr %> </li>
+    <li><span>Тел:</span>
+        <%= f.text_field :phone %> </li>
+    <li><span>e-mail:</span>
+        <%= f.text_field :email %> </li>
+    <li><span>Веб-сайт:</span>
+        <%= f.text_field :siteurl %> </li>
+    <li><span>Главное изображение:</span>
+        <input type="file"><br>
+        <input type="button" value="Добавить ещё изображение" style="width: 200px"></li>
+    <li><h3>Укажите место на карте</h3>
+        <div style="margin: 10pxl width: 100%; background: #adadad; color: #fff; font-size: 55px; text-align: center; line-height: 80px;">
+          Здесь функционал по указанию координат на карте. 
+        </div>
+    </li>
+    <%= f.submit "Опубликовать", :name => 'publicate' %>
+    <%= f.submit "Просмотреть", :name => 'view' %>
+    <%= f.submit "Удалить", :name => 'delete' %>
+  </ul>
+<% end %>
+
+<% content_for :head do %>
+  <script src="/javascripts/jquery.ui.core.js"></script>
+  <script src="/javascripts/jquery.ui.widget.js"></script>
+  <script src="/javascripts/jquery.ui.position.js"></script>
+  <script src="/javascripts/jquery.ui.menu.js"></script>
+  <script src="/javascripts/jquery.ui.autocomplete.js"></script>
+  <script src="/javascripts/catalog_edit_form.js"></script>
+<% end %>
+
+<script type="text/javascript">
+  var catalog_id = <%= @catalog.id -%> ;
+</script>

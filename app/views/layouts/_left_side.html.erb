@@ -1,0 +1,33 @@
+<div id="left_side">
+  <% unless current_user %>
+    <div id="login_mod">
+      <h3>Авторизация</h3>
+      <%= form_tag login_path, :autocomplete => "off" do %>
+        <%= text_field_tag :login, "№ Тел." %>
+        <%= password_field_tag :password, "пароль", :autocomplete => "off" %>
+        <%= submit_tag "Войти" %>
+        <br>
+      <% end %>
+      <%= link_to "Регистрация", users_registration_path %>
+      <%= link_to "Забыли пароль", users_password_recovery_path %>
+    </div>
+  <% else %>
+    <div id="profile">
+      <h3><%= current_user.nick %></h3>
+      <%= image_tag current_user.avatar.url(:thumb), :width => 177, :height => 177 %>
+      <%= link_to "Мой профиль", edit_user_path(current_user) %>
+      <a href="../user_logon/un_subscribe.html">Моё бизнес окружение</a>
+      <%= link_to "Создать каталог", new_catalog_path %>
+      <a href="../user_logon/my_mess.html">Мои сообщения</a>
+      <a href="../user_logon/logon.html">Лента</a>
+      <%= link_to "Выход", logout_path %>
+      <% if admin? %>
+        <%= link_to "Админка", admpanel_index_path -%>
+      <% end %>
+    </div>
+    <div id="mycat">
+      <h3>Мой каталог</h3>
+      <a href="../user_logon/my_catalog.html"><img src="/images/autoshop.jpg"> АвтоShop</a>
+    </div>
+  <% end %>
+</div>

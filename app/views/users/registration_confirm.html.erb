@@ -1,0 +1,28 @@
+<div id="form_page">
+  <h3>Подтверждение Регистрации пользователя</h3>
+  <%= form_for @user, :url => login_path, :html => { :method => :post } do |f| %>
+  
+    <% if @user.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@user.errors.count, "error") %> при создании пользователя</h2>
+        <ul>
+        <% @user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+    
+    
+    <ul>
+      <li><span>Ваш номер телефона:</span>
+          <%= text_field_tag :login, @user.phone %></li>
+      <% if Rails.env.development? %>
+        <li>пароль виден только в режиме разработки: <%= @user.password_open_text %></li>
+      <% end %>
+      <li><span>Пароль выслан Вам на СМС</span>
+          <%= text_field_tag :password %>
+    </ul>
+    <%= f.submit "Зарегистрироваться", :id => "submit_but" %>
+  <% end %>
+</div>
