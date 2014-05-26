@@ -23,7 +23,7 @@ public/images
 Capfile
 config/deploy.rb
 
-config/database.yml
+#config/database.yml
 
 *.swo
 *.swp
