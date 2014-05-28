@@ -11,12 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140505124800) do
+ActiveRecord::Schema.define(version: 20140528124527) do
 
   create_table "biznesstypes", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "catalogimgs", force: true do |t|
+    t.integer  "catalog_id"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "picture_file_name"
+    t.string   "picture_content_type"
+    t.integer  "picture_file_size"
+    t.datetime "picture_updated_at"
   end
 
   create_table "catalogs", force: true do |t|
@@ -31,6 +42,7 @@ ActiveRecord::Schema.define(version: 20140505124800) do
     t.integer  "user_id",     null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "sss"
   end
 
   create_table "localities", force: true do |t|

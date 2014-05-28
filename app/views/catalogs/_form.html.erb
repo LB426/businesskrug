@@ -1,4 +1,4 @@
-<%= form_for(@catalog) do |f| %>
+<%= form_for( @catalog, :html => { :multipart => true } ) do |f| %>
   <% if @catalog.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@catalog.errors.count, "error") %> prohibited this catalog from being saved:</h2>
@@ -20,7 +20,19 @@
           <h4><%= section.name -%></h4>
           <% Subsection.where(section_id: section.id).each do |subsection| %>
             <div>
-              <input type="checkbox" name="sec_and_sub_sec[<%= section.id %>[<%= subsection.id %>]]"><%= subsection.name %>
+              <% flag = false %>
+              <% unless @catalog.sss.nil? %>
+                <% @catalog.sss.each do |sss_hash| %>
+                  <% if sss_hash['sec'].to_i == section.id && sss_hash['subsec'].to_i == subsection.id %>
+                    <% flag = true %>
+                  <% end %>
+                <% end %>
+              <% end %>
+              <% if flag %>
+                <input type="checkbox" name="sec_and_sub_sec[<%= section.id %>[<%= subsection.id %>]]" checked><%= subsection.name %>
+              <% else %>
+                <input type="checkbox" name="sec_and_sub_sec[<%= section.id %>[<%= subsection.id %>]]"><%= subsection.name %>
+              <% end %>
             </div>
           <% end %>
         <% end %>
@@ -39,8 +51,12 @@
     <li><span>Веб-сайт:</span>
         <%= f.text_field :siteurl %> </li>
     <li><span>Главное изображение:</span>
-        <input type="file"><br>
-        <input type="button" value="Добавить ещё изображение" style="width: 200px"></li>
+        <% 1.times { @catalog.catalogimgs.build } %>
+        <%= f.fields_for :catalogimgs do |cf| %>
+          <%= cf.file_field :picture %>
+        <% end %>
+    </li>
+
     <li><h3>Укажите место на карте</h3>
         <div style="margin: 10pxl width: 100%; background: #adadad; color: #fff; font-size: 55px; text-align: center; line-height: 80px;">
           Здесь функционал по указанию координат на карте. 

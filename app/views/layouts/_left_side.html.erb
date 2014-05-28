@@ -25,9 +25,13 @@
         <%= link_to "Админка", admpanel_index_path -%>
       <% end %>
     </div>
+    <% catalogs = Catalog.where("user_id = ?", current_user.id) %>
+    <% catalogs.each do |cat| %>
+    <% logger.debug "catalog = #{cat}" %>
     <div id="mycat">
       <h3>Мой каталог</h3>
-      <a href="../user_logon/my_catalog.html"><img src="/images/autoshop.jpg"> АвтоShop</a>
+      <a href="<%= edit_catalog_path cat %>"><img src="/images/autoshop.jpg"> АвтоShop</a>
     </div>
+    <% end %>
   <% end %>
 </div>
