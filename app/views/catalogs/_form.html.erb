@@ -1,3 +1,17 @@
+<% content_for :head do %>
+  <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+  <script src="/javascripts/jquery.ui.core.js"></script>
+  <script src="/javascripts/jquery.ui.widget.js"></script>
+  <script src="/javascripts/jquery.ui.position.js"></script>
+  <script src="/javascripts/jquery.ui.menu.js"></script>
+  <script src="/javascripts/jquery.ui.autocomplete.js"></script>
+  <script src="/javascripts/catalog_edit_form.js"></script>
+<% end %>
+
+<script type="text/javascript">
+  var catalog_id = <%= @catalog.id -%> ;
+</script>
+
 <%= form_for( @catalog, :html => { :multipart => true } ) do |f| %>
   <% if @catalog.errors.any? %>
     <div id="error_explanation">
@@ -51,16 +65,38 @@
     <li><span>Веб-сайт:</span>
         <%= f.text_field :siteurl %> </li>
     <li><span>Главное изображение:</span>
-        <% 1.times { @catalog.catalogimgs.build } %>
-        <%= f.fields_for :catalogimgs do |cf| %>
-          <%= cf.file_field :picture %>
-        <% end %>
+        <script type="text/javascript">
+          var catimg_attr_counter = <%= @catalog.catalogimgs.count %> ;
+        </script>
+        <div id='add_catalogimgs_block'>
+          <% unless @catalog.catalogimgs.first.nil? %>
+            <!-- если есть хотя бы одна картинка -->
+            <%= f.fields_for :catalogimgs do |cf| %>
+              <p>
+                <%= image_tag cf.object.picture.url(:thumb) %><br />
+                Изменить <%= cf.file_field :picture %><br />
+              </p>
+              <p>
+                <%= cf.label :_destroy, "Удалить" %>
+                <%= cf.check_box :_destroy %>
+              </p>
+              <hr>
+            <% end %>
+          <% else %>
+            <!-- если нет картинок -->
+            <% 1.times { @catalog.catalogimgs.build } %>
+            <%= f.fields_for :catalogimgs do |cf| %>
+              <%= cf.file_field :picture %>
+            <% end %>
+          <% end %>
+        </div>
+        <a href="#" id='add_catalogimgs_link'>+ Добавить картинку</a>
     </li>
 
     <li><h3>Укажите место на карте</h3>
-        <div style="margin: 10pxl width: 100%; background: #adadad; color: #fff; font-size: 55px; text-align: center; line-height: 80px;">
-          Здесь функционал по указанию координат на карте. 
-        </div>
+         <div class="map">
+           <%= render :partial => 'map' %>
+         </div>
     </li>
     <%= f.submit "Опубликовать", :name => 'publicate' %>
     <%= f.submit "Просмотреть", :name => 'view' %>
@@ -68,15 +104,3 @@
   </ul>
 <% end %>
 
-<% content_for :head do %>
-  <script src="/javascripts/jquery.ui.core.js"></script>
-  <script src="/javascripts/jquery.ui.widget.js"></script>
-  <script src="/javascripts/jquery.ui.position.js"></script>
-  <script src="/javascripts/jquery.ui.menu.js"></script>
-  <script src="/javascripts/jquery.ui.autocomplete.js"></script>
-  <script src="/javascripts/catalog_edit_form.js"></script>
-<% end %>
-
-<script type="text/javascript">
-  var catalog_id = <%= @catalog.id -%> ;
-</script>

@@ -26,12 +26,19 @@
       <% end %>
     </div>
     <% catalogs = Catalog.where("user_id = ?", current_user.id) %>
-    <% catalogs.each do |cat| %>
-    <% logger.debug "catalog = #{cat}" %>
-    <div id="mycat">
-      <h3>Мой каталог</h3>
-      <a href="<%= edit_catalog_path cat %>"><img src="/images/autoshop.jpg"> АвтоShop</a>
-    </div>
+    <% catalogs.each do |catalog| %>
+      <% catimg1 = catalog.catalogimgs.first %>
+      <% catimg1_url = "" %>
+      <% unless catimg1.nil? %>
+        <% catimg1_url = catimg1.picture.url(:thumb) %>
+      <% end %>
+      <div id="mycat">
+        <h3>Мой каталог</h3>
+        <a href="<%= edit_catalog_path catalog %>">
+          <img src="<%= catimg1_url %>">
+          <%= catalog.name  %>
+        </a>
+      </div>
     <% end %>
   <% end %>
 </div>

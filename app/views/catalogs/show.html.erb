@@ -38,5 +38,12 @@
   <%= @catalog.biztype %>
 </p>
 
+<p>
+  <strong>photo:</strong><br />
+  <% @catalog.catalogimgs.each do | catimg | %>
+    <%= image_tag catimg.picture.url(:thumb) %>
+  <% end %>
+</p>
+
 <%= link_to 'Edit', edit_catalog_path(@catalog) %> |
 <%= link_to 'Back', catalogs_path %>

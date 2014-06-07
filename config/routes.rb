@@ -8,6 +8,8 @@ Rails.application.routes.draw do
 
   get 'biznesstypes/get_biznesstype'
 
+  put 'catalogs/:id/setcoordinate' => 'catalogs#setcoordinate', as: :catalog_setcoordinate
+  get 'catalogs/:id/mappopup' => 'catalogs#mappopup', as: :catalog_mappopup
   get 'catalogs/:id/destroy' => 'catalogs#destroy', as: :catalog_destroy
   resources :catalogs
 

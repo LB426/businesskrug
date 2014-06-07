@@ -1,7 +1,7 @@
 class CatalogsController < ApplicationController
   before_filter :mark
   before_action :authorize
-  before_action :set_catalog, only: [:show, :edit, :update, :destroy]
+  before_action :set_catalog, only: [:show, :edit, :update, :destroy, :setcoordinate]
 
   # GET /catalogs
   # GET /catalogs.json
@@ -17,53 +17,71 @@ class CatalogsController < ApplicationController
   # GET /catalogs/new
   def new
     @catalogs = current_user.catalogs
+    flag = false
     if @catalogs.size > 0
       @catalogs.each do |catalog|
         if catalog.name.nil? || catalog.name.empty?
           flash[:alert] = "У Вас есть незавершённые каталоги.<br>Чтобы создать новый завершите их создание или удалите.<br>Незавершенным считается каталог который имеет ходя бы одно незаполненное поле описания, не имеет загруженных изображений или место на карте не указано."
-          redirect_to catalogs_path
+          flag = true
           break
         end
         if catalog.locality.nil? || catalog.locality.empty?
           flash[:alert] = "У Вас есть незавершённые каталоги.<br>Чтобы создать новый завершите их создание или удалите.<br>Незавершенным считается каталог который имеет ходя бы одно незаполненное поле описания, не имеет загруженных изображений или место на карте не указано."
-          redirect_to catalogs_path
+          flag = true
           break
         end
         if catalog.addr.nil? || catalog.addr.empty?
           flash[:alert] = "У Вас есть незавершённые каталоги.<br>Чтобы создать новый завершите их создание или удалите.<br>Незавершенным считается каталог который имеет ходя бы одно незаполненное поле описания, не имеет загруженных изображений или место на карте не указано."
-          redirect_to catalogs_path
+          flag = true
           break
         end
         if catalog.phone.nil? || catalog.phone.empty?
           flash[:alert] = "У Вас есть незавершённые каталоги.<br>Чтобы создать новый завершите их создание или удалите.<br>Незавершенным считается каталог который имеет ходя бы одно незаполненное поле описания, не имеет загруженных изображений или место на карте не указано."
-          redirect_to catalogs_path
+          flag = true
           break
         end
         if catalog.email.nil? || catalog.email.empty?
           flash[:alert] = "У Вас есть незавершённые каталоги.<br>Чтобы создать новый завершите их создание или удалите.<br>Незавершенным считается каталог который имеет ходя бы одно незаполненное поле описания, не имеет загруженных изображений или место на карте не указано."
-          redirect_to catalogs_path
+          flag = true
           break
         end
         if catalog.description.nil? || catalog.description.empty?
           flash[:alert] = "У Вас есть незавершённые каталоги.<br>Чтобы создать новый завершите их создание или удалите.<br>Незавершенным считается каталог который имеет ходя бы одно незаполненное поле описания, не имеет загруженных изображений или место на карте не указано."
-          redirect_to catalogs_path
+          flag = true
           break
         end
         if catalog.biztype.nil? || catalog.biztype.empty?
           flash[:alert] = "У Вас есть незавершённые каталоги.<br>Чтобы создать новый завершите их создание или удалите.<br>Незавершенным считается каталог который имеет ходя бы одно незаполненное поле описания, не имеет загруженных изображений или место на карте не указано."
-          redirect_to catalogs_path
+          flag = true
           break
         end
-        @catalog = current_user.catalogs.new
+        if catalog.catalogimgs.first == nil
+          flash[:alert] = "У Вас есть незавершённые каталоги.<br>Чтобы создать новый завершите их создание или удалите.<br>Незавершенным считается каталог который имеет ходя бы одно незаполненное поле описания, не имеет загруженных изображений или место на карте не указано."
+          flag = true
+          break
+        end
       end
+    end
+    if flag == true
+      redirect_to catalogs_path
     else
       @catalog = current_user.catalogs.new
       @catalog.save
+      redirect_to edit_catalog_path(@catalog)
     end
   end
 
   # GET /catalogs/1/edit
   def edit
+    @onload = "init()"
+    if @catalog.lat.nil? && @catalog.lon.nil?
+      @lon = 40.1257947
+      @lat = 45.853046010913
+    else
+      @lon = @catalog.lon
+      @lat = @catalog.lat
+    end
+    @pic = @catalog.catalogimgs.first
   end
 
   # POST /catalogs
@@ -118,6 +136,12 @@ class CatalogsController < ApplicationController
         end
       end
     end
+    unless params[:delete].nil?
+      redirect_to catalog_destroy_path(@catalog)
+    end
+    unless params[:view].nil?
+      redirect_to catalog_path(@catalog)
+    end
   end
 
   # DELETE /catalogs/1
@@ -131,6 +155,33 @@ class CatalogsController < ApplicationController
     end
   end
 
+  def mappopup
+    @catalog = Catalog.find(params[:id])
+    @pic = @catalog.catalogimgs.first
+    @business = @catalog.biztype
+    title = " <img src='#{@pic.picture.url(:thumb)}'><br>
+              <a href='#{catalog_path(@catalog)}' >#{@catalog.name}</a>"
+    buffer = "point\ttitle\tdescription\ticon\ticonSize\n#{@catalog.lat}, #{@catalog.lon}\t#{title}\t<strong style='text-align: center'>#{@business}</strong>\t/images/map_marker_green.png\t24,40\n"
+    response.headers['Content-type'] = "text/plain; charset=utf-8"
+    render :text => buffer, :layout => false    
+  end
+
+  def setcoordinate
+    @catalog.lat = params[:latitude]
+    @catalog.lon = params[:longitude]
+    res = "false"
+    if @catalog.save
+      res = "true"
+    end
+    logger.debug "res = #{res}"
+    response.headers['Content-type'] = "text/plain; charset=utf-8"
+    render :text => res
+    #rescue
+    #  logger.debug "rescue"
+    #  response.headers['Content-type'] = "text/plain; charset=utf-8"
+    #  render :text => "false"
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_catalog
@@ -140,7 +191,7 @@ class CatalogsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def catalog_params
       params.require(:catalog).permit(:name, :locality, :addr, :phone, :email, :siteurl, :description, :biztype, 
-                                      catalogimgs_attributes: [:picture, :id] )
+                                      catalogimgs_attributes: [:picture, :id, :_destroy] )
     end
 
 end
