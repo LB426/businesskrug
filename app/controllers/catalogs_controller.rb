@@ -126,6 +126,9 @@ class CatalogsController < ApplicationController
           test = test + '<br>email: неверный формат, пример - andrey@mymail.ru'
         end
       end
+      if @catalog.sss.nil?
+          test = test + '<br>Разделы бизнеса: нужно выбрать хотя бы  один раздел. Если нет подходящего Вам раздела напишите нам и мы внесём его в список.'
+      end
       respond_to do |format|
         if @catalog.update(catalog_params)
           format.html { redirect_to @catalog, notice: "Каталог успешно обновлён. #{test}" }

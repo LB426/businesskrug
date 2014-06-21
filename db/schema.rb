@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140607104314) do
+ActiveRecord::Schema.define(version: 20140621130341) do
 
   create_table "biznesstypes", force: true do |t|
     t.string   "name"
@@ -47,7 +47,21 @@ ActiveRecord::Schema.define(version: 20140607104314) do
     t.string   "lon"
   end
 
+  create_table "items", force: true do |t|
+    t.string   "name"
+    t.text     "spec"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "localities", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "particles", force: true do |t|
+    t.integer  "catalog_id", null: false
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"

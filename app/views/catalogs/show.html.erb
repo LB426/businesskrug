@@ -47,3 +47,12 @@
 
 <%= link_to 'Edit', edit_catalog_path(@catalog) %> |
 <%= link_to 'Back', catalogs_path %>
+
+<p>
+<%= link_to 'Добавить страницу', new_catalog_particle_path(@catalog) %>
+</p>
+<p>
+<% @catalog.particles.each do |particle| %>
+  <%= particle.name %><br>
+<% end %>
+</p>
