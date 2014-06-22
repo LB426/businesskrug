@@ -1,8 +1,5 @@
 Rails.application.routes.draw do
 
-  resources :items
-  
-
   get 'subsections/:id/destroy' => 'subsections#destroy', as: :subsection_destroy
   resources :subsections
   
@@ -15,7 +12,9 @@ Rails.application.routes.draw do
   get 'catalogs/:id/mappopup' => 'catalogs#mappopup', as: :catalog_mappopup
   get 'catalogs/:id/destroy' => 'catalogs#destroy', as: :catalog_destroy
   resources :catalogs do
-    resources :particles
+    resources :particles do
+      resources :items
+    end
   end
 
   get 'localities/get_locality'

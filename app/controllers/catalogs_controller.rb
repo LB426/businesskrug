@@ -65,8 +65,15 @@ class CatalogsController < ApplicationController
     if flag == true
       redirect_to catalogs_path
     else
+      # Если ни в одном из существующих каталогов ошибок нет, то создаётся пустой каталог
       @catalog = current_user.catalogs.new
-      @catalog.save
+      if @catalog.save
+        @particle = @catalog.particles.new
+        if @particle.save
+          @item = @particle.items.new
+          @item.save
+        end
+      end
       redirect_to edit_catalog_path(@catalog)
     end
   end

@@ -53,6 +53,11 @@
 </p>
 <p>
 <% @catalog.particles.each do |particle| %>
-  <%= particle.name %><br>
+  <% unless particle.name.nil? || particle.name.empty? %>
+    <%= particle.name %><br>
+  <% else %>
+    Имеется незаполненная страница каталога -  
+    <%= link_to "заполнить", edit_catalog_particle_path(@catalog, particle) %>
+  <% end %>
 <% end %>
 </p>

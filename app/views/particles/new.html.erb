@@ -11,7 +11,7 @@
 <input id="submit_but" type="submit" value="Добавить">
 </div>
 
-<%= form_for(@particle, url: catalog_particles_path(@catalog)) do |f| %>
+<%= form_for(@particle, url: catalog_particles_path(@catalog), :html => { :multipart => true } ) do |f| %>
   <% if @particle.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@particle.errors.count, "error") %> prohibited this item from being saved:</h2>
@@ -28,6 +28,11 @@
     <%= f.label :name %><br>
     <%= f.text_field :name %>
   </div>
+  <% 1.times { @particle.items.build } %>
+  <%= f.fields_for :items do |it| %>
+    <%= it.text_field :name %><br>
+    <%= it.text_field :spec %>
+  <% end %>
   <div class="actions">
     <%= f.submit %>
   </div>

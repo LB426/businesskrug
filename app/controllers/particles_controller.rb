@@ -7,6 +7,9 @@ class ParticlesController < ApplicationController
     @particle = @catalog.particles.new
   end
 
+  def edit
+  end
+
   def create
     @particle = @catalog.particles.new(particle_params)
 
@@ -25,8 +28,12 @@ class ParticlesController < ApplicationController
       @catalog = Catalog.find(params[:catalog_id])
     end
 
+    def set_particle
+      @particle = Particle.find(params[:id])
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def particle_params
-      params.require(:particle).permit(:name)
+      params.require(:particle).permit(:name, items_attributes: [:name, :spec] )
     end
 end

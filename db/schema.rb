@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140621130341) do
+ActiveRecord::Schema.define(version: 20140622090039) do
 
   create_table "biznesstypes", force: true do |t|
     t.string   "name"
@@ -47,7 +47,15 @@ ActiveRecord::Schema.define(version: 20140621130341) do
     t.string   "lon"
   end
 
+  create_table "itemimgs", force: true do |t|
+    t.integer  "item_id"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "items", force: true do |t|
+    t.integer  "particle_id", null: false
     t.string   "name"
     t.text     "spec"
     t.datetime "created_at"
