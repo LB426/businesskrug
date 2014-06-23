@@ -1,16 +1,5 @@
 <div id="form_page">
-<h3>Добавить страницу каталога «АвтоShop»</h3>
-<ul>
-  <li class="yellow_bg"><span>Заголовок страницы:</span><input type="text"></li>
-  <hr>
-  <li><span>Заголовок первого материала на странице:</span><input type="text"></li>
-  <li><span>Описание первого материала на странице:</span><textarea></textarea></li>
-  <li><span>Главное изображение:</span><input type="file"><br>
-  <input type="button" value="Добавить ещё изображение" style="width: 200px"></li>
-</ul>
-<input id="submit_but" type="submit" value="Добавить">
-</div>
-
+<h3>Добавить страницу каталога «<%= @catalog.name %>»</h3>
 <%= form_for(@particle, url: catalog_particles_path(@catalog), :html => { :multipart => true } ) do |f| %>
   <% if @particle.errors.any? %>
     <div id="error_explanation">
@@ -23,17 +12,20 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <% 1.times { @particle.items.build } %>
-  <%= f.fields_for :items do |it| %>
-    <%= it.text_field :name %><br>
-    <%= it.text_field :spec %>
-  <% end %>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+  <ul>
+    <li class="yellow_bg"> <span>Заголовок страницы:</span> <%= f.text_field :name %> </li>
+    <hr>
+    <% 1.times { @particle.items.build } %>
+    <%= f.fields_for :items do |it| %>
+      <li> <span>Заголовок первого материала на странице:</span> <%= it.text_field :name %> </li>
+      <li> <span>Описание первого материала на странице:</span> <%= it.text_area :spec %> </li>
+      <li>
+        <span>Главное изображение:</span> <%= it.file_field :picture %><br>
+        <input type="button" value="Добавить ещё изображение" style="width: 200px">
+      </li>
+    <% end %>
+    
+  </ul>
+  <%= f.submit "Добавить", :id => "submit_but" %>
 <% end %>
+</div>

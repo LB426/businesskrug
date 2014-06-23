@@ -71,7 +71,10 @@ class CatalogsController < ApplicationController
         @particle = @catalog.particles.new
         if @particle.save
           @item = @particle.items.new
-          @item.save
+          if @item.save
+            @itemimage = @item.itemimgs.new
+            @itemimage.save
+          end
         end
       end
       redirect_to edit_catalog_path(@catalog)
