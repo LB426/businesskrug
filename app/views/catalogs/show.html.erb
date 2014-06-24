@@ -49,15 +49,13 @@
 <%= link_to 'Back', catalogs_path %>
 
 <p>
-<%= link_to 'Добавить страницу', new_catalog_particle_path(@catalog) %>
-</p>
-<p>
 <% @catalog.particles.each do |particle| %>
   <% unless particle.name.nil? || particle.name.empty? %>
-    <%= particle.name %><br>
+    <%= link_to "Страница каталога #{particle.name}", catalog_particle_path(@catalog, particle) %><br>
   <% else %>
-    Имеется незаполненная страница каталога -  
-    <%= link_to "заполнить", edit_catalog_particle_path(@catalog, particle) %>
+    <%= link_to "Страница каталога  #{particle.name} не заполнена", catalog_particle_path(@catalog, particle) %><br>
   <% end %>
 <% end %>
 </p>
+
+<%= link_to 'Добавить страницу каталога', new_catalog_particle_path(@catalog) %>

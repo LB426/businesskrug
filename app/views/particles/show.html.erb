@@ -1,0 +1,4 @@
+<h1><%= @particle.name %></h1>
+<% @particle.items.each do | item | %>
+  <%= link_to "Материал #{item.name}", edit_catalog_particle_item_path(@catalog, @particle, item) %><br>
+<% end %>

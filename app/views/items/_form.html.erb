@@ -1,4 +1,8 @@
-<%= form_for(@item) do |f| %>
+<% content_for :head do %>
+  <script src="/javascripts/item_edit_form.js"></script>
+<% end %>
+
+<%= form_for(@item, url: catalog_particle_item_path(@catalog, @particle, @item), :html => { :multipart => true } ) do |f| %>
   <% if @item.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@item.errors.count, "error") %> prohibited this item from being saved:</h2>
@@ -11,14 +15,28 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :spec %><br>
-    <%= f.text_area :spec %>
-  </div>
+  <ul>
+    <li> <span>Заголовок предложения:</span> <%= f.text_field :name %> </li>
+    <li> <span>Описание предложения:</span> <%= f.text_area :spec %> </li>
+    <li> <h3>Фото</h3>
+        <script type="text/javascript">
+          var item_img_attr_counter = <%= @item.itemimgs.count %> ;
+        </script>
+         <table class="edit_table">
+         <%= f.fields_for :itemimgs do |image| %>  
+            <tr>
+              <td> <%= image_tag image.object.picture.url(:thumb) %> </td>
+              <td> Заменить:<br> <%= image.file_field :picture %>  </td>
+              <td> Удалить<br><%= image.check_box :_destroy %> </td>
+            </tr>
+         <% end %>
+         </table>
+        <div id='add_itemimgs_block'>
+        </div>
+        <input type="button" id='add_itemimgs_link' value="Добавить ещё изображение" style="width: 200px">
+    </li>
+  </ul>
+
   <div class="actions">
     <%= f.submit %>
   </div>

@@ -1,27 +1,3 @@
-<%= form_for(@particle, url: catalog_particle_path(@catalog, @particle), :html => { :multipart => true } ) do |f| %>
-  <% if @particle.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@particle.errors.count, "error") %> prohibited this item from being saved:</h2>
-
-      <ul>
-      <% @particle.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :name %>
-    <%= f.text_field :name %>
-  </div>
-  <%= f.fields_for :items do |it| %>
-    <%= f.label :name %>
-    <%= it.text_field :name %><br>
-    <%= f.label :spec %>
-    <%= it.text_field :spec %>
-  <% end %>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+<div id="form_page">
+  <%= render 'form' %>
+</div>

@@ -1,0 +1,27 @@
+<%= form_for(@particle, url: catalog_particle_path(@catalog, @particle), :html => { :multipart => true } ) do |f| %>
+  <% if @particle.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@particle.errors.count, "error") %> prohibited this item from being saved:</h2>
+
+      <ul>
+      <% @particle.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <ul>
+    <li class="yellow_bg"> <span>Заголовок страницы:</span> <%= f.text_field :name %> </li>
+    <hr>
+    <%= f.fields_for :items do |item| %>
+      <li> <span>Заголовок первого материала на странице:</span> <%= item.text_field :name %> </li>
+      <li> <span>Описание первого материала на странице:</span> <%= item.text_area :spec %> </li>
+      <%= item.fields_for :itemimgs do |img| %>
+      <li>
+        <span>Главное изображение:</span> <%= img.file_field :picture %><br>
+      </li>
+      <% end %>
+    <% end %>
+  </ul>
+  <%= f.submit "Добавить", :id => "submit_but" %>
+<% end %>

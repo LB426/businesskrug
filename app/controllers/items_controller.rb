@@ -1,4 +1,8 @@
 class ItemsController < ApplicationController
+  before_filter :mark
+  before_action :authorize
+  before_action :set_catalog, only: [:edit, :update]
+  before_action :set_particle, only: [:edit, :update]
   before_action :set_item, only: [:show, :edit, :update, :destroy]
 
   # GET /items
@@ -42,7 +46,7 @@ class ItemsController < ApplicationController
   def update
     respond_to do |format|
       if @item.update(item_params)
-        format.html { redirect_to @item, notice: 'Item was successfully updated.' }
+        format.html { redirect_to edit_catalog_particle_item_path(@catalog,@particle,@item), notice: 'Item was successfully updated.' }
         format.json { render :show, status: :ok, location: @item }
       else
         format.html { render :edit }
@@ -63,12 +67,20 @@ class ItemsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def set_catalog
+      @catalog = Catalog.find(params[:catalog_id])
+    end
+
+    def set_particle
+      @particle = Particle.find(params[:particle_id])
+    end
+
     def set_item
       @item = Item.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
-      params.require(:item).permit(:name, :spec)
+      params.require(:item).permit(:name, :spec, itemimgs_attributes: [:picture, :id, :_destroy] )
     end
 end
