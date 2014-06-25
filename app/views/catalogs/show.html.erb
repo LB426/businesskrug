@@ -1,3 +1,89 @@
+<% content_for :head do %>
+  <script type="text/javascript" src="/javascripts/galleria/galleria-1.3.5.min.js"></script>
+  <script type="text/javascript" src="/javascripts/catalog_show.js"></script>
+<% end %>
+
+<div id="home">
+  <h1>«<%= @catalog.name %>»</h1>
+  <div id="object_info">
+    <div id="top_info">
+      <div class="galleria">
+        <% @catalog.catalogimgs.each do | catimg | %>
+          <%= image_tag catimg.picture.url(:medium) %>
+        <% end %>
+      </div>
+      <dl id="object_info_dl">
+        <dt>Тип:</dt>
+        <dd><%= @catalog.biztype %></dd>
+        <dt>Адрес:</dt>
+        <dd><%= @catalog.locality %>, <%= @catalog.addr %>
+          <span class="show_hide_map red" style="border-bottom: 1px dashed #f00;">Показать на карте</span>
+        </dd>
+        <dt>Тел:</dt>
+        <dd><%= @catalog.phone %></dd>
+        <dt>Веб-сайт:</dt>
+        <dd><%= @catalog.siteurl %></dd>
+        <dt>Размещён:</dt>
+        <dd><%= @catalog.created_at %></dd>
+      </dl>
+      <div id="contact_info">
+        <h4>Управление</h4>
+        <%= link_to "Изменить основноую информацию", edit_catalog_path(@catalog), { :class => "button" } %>
+        <%= link_to "Добавить страницу", new_catalog_particle_path(@catalog), { :class => "button" } %>
+      </div>
+    </div>
+    <div id="text_description"> <%= @catalog.description %> </div>
+    <div id="tri_blocka">
+      <div class="one_ftom_3" id="block_str">
+        <div>
+          <h3>Страницы каталога <span><%= @catalog.particles.count() %></span></h3>
+          <% @catalog.particles.each do |particle| %>
+            <a href="<%= catalog_particle_path(@catalog, particle) %>">
+              <%= image_tag particle.items[0].itemimgs.first.picture.url(:medium) %><br>
+              <%= particle.name %>
+            </a>
+          <% end %>
+          <a href="../user_logon/item.html">
+          <img src="../images/str2.jpg"><br>
+          Литые диски</a>
+          <span class="show_all" id="togle_str"><></span>
+        </div>
+      </div>
+      <div class="one_ftom_3">
+        <div id="public_followers_icon">
+          <h3><a href="../user_logon/members_biznes_circle.html">Бизнес круг<span>789456</span></a></h3>
+          <div><a class="user_online" href="../user_logon/profile.html"><img src="../images/53.gif"><br>Nik-name</a></div>
+          <div><a href="../user_logon/profile.html"><img src="../images/62.gif"><br>Nik-name</a></div>
+          <div><a class="user_online" href="../user_logon/profile.html"><img src="../images/43.gif"><br>Nik-name</a></div>
+          <div><a class="user_online" href="../user_logon/profile.html"><img src="../images/01.gif"><br>Nik-name</a></div>
+          <div><a class="user_online" href="../user_logon/profile.html"><img src="../images/39.gif"><br>Nik-name</a></div>
+          <div><a href="../user_logon/profile.html"><img src="../images/450.gif"><br>Nik-name</a></div>
+          <div><a href="../user_logon/profile.html"><img src="../images/422.gif"><br>Nik-name</a></div>
+          <div><a href="../user_logon/profile.html"><img src="../images/76.gif"><br>Nik-name</a></div>
+          <a href="../user_logon/invite.html" class="button w70">+ Пригласить в бизнес круг</a>
+        </div>
+      </div>
+      <div class="one_ftom_3">
+        <div id="mod" class="otziv_mnenie">
+          <h3><a href="reviews.html">Отзывы / Мнения</a><span>148<span></h3>
+          <div class="otziv">
+            <a href="profile.html" class="user_online"><img src="../images/53.gif"><br>Nik-name</a>
+            <p>Очень яркий и красочный сайт!!! Удобен и прост в использовании, что немаловажно! </p>
+          </div>
+          <div class="otziv">
+            <a href="profile.html"><img src="../images/422.gif"><br>Nik-name</a>
+            <p>Очень яркий и красочный сайт!!! Удобен и прост в использовании, что немаловажно! </p>
+          </div>
+          <div class="otziv">
+            <a href="profile.html"><img src="../images/53.gif"><br>Nik-name</a>
+            <p>Очень яркий и красочный сайт!!! Удобен и прост в использовании, что немаловажно! </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <p>
   <strong>Name:</strong>
   <%= @catalog.name %>
