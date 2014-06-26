@@ -1,8 +1,8 @@
 class ItemsController < ApplicationController
   before_filter :mark
   before_action :authorize
-  before_action :set_catalog, only: [:edit, :update]
-  before_action :set_particle, only: [:edit, :update]
+  before_action :set_catalog, only: [:new, :edit, :update, :destroy]
+  before_action :set_particle, only: [:new, :edit, :update, :destroy]
   before_action :set_item, only: [:show, :edit, :update, :destroy]
 
   # GET /items
@@ -18,7 +18,11 @@ class ItemsController < ApplicationController
 
   # GET /items/new
   def new
-    @item = Item.new
+    @item = @particle.items.new
+    @item.save
+    @itemimg = @item.itemimgs.new
+    @itemimg.save
+    redirect_to edit_catalog_particle_item_path(@catalog, @particle, @item)
   end
 
   # GET /items/1/edit
@@ -46,7 +50,7 @@ class ItemsController < ApplicationController
   def update
     respond_to do |format|
       if @item.update(item_params)
-        format.html { redirect_to edit_catalog_particle_item_path(@catalog,@particle,@item), notice: 'Item was successfully updated.' }
+        format.html { redirect_to catalog_particle_path(@catalog, @particle), notice: 'Item was successfully updated.' }
         format.json { render :show, status: :ok, location: @item }
       else
         format.html { render :edit }
@@ -60,7 +64,7 @@ class ItemsController < ApplicationController
   def destroy
     @item.destroy
     respond_to do |format|
-      format.html { redirect_to items_url, notice: 'Item was successfully destroyed.' }
+      format.html { redirect_to catalog_particle_path(@catalog, @particle), notice: 'Item was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

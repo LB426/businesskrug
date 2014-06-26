@@ -6,7 +6,6 @@
   <% if @item.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@item.errors.count, "error") %> prohibited this item from being saved:</h2>
-
       <ul>
       <% @item.errors.full_messages.each do |message| %>
         <li><%= message %></li>
@@ -36,8 +35,5 @@
         <input type="button" id='add_itemimgs_link' value="Добавить ещё изображение" style="width: 200px">
     </li>
   </ul>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+  <%= f.submit "Сохранить изменения", { :id => "submit_but" }  %>
 <% end %>

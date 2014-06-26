@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
       if cookies[:uid] != user.unique_id
         lie_user = User.find_by_unique_id(cookies[:uid])
         cookies.delete :uid
-        lie_user.delete
+        lie_user.delete unless lie_user.nil?
         cookies[:uid] = {
           :value => user.unique_id,
           :expires => 1.year.from_now,

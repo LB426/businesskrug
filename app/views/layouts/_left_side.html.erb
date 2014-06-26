@@ -30,7 +30,7 @@
       <% catimg1 = catalog.catalogimgs.first %>
       <% catimg1_url = "" %>
       <% unless catimg1.nil? %>
-        <% catimg1_url = catimg1.picture.url(:thumb) %>
+        <% catimg1_url = catimg1.picture.url(:medium) %>
       <% end %>
       <div id="mycat">
         <h3>Мой каталог</h3>

@@ -1,8 +1,8 @@
 class ParticlesController < ApplicationController
   before_filter :mark
   before_action :authorize
-  before_action :set_catalog, only: [:new, :create, :update, :edit, :show]
-  before_action :set_particle, only: [:update, :edit, :show]
+  before_action :set_catalog, only: [:new, :create, :update, :edit, :show, :destroy]
+  before_action :set_particle, only: [:update, :edit, :show, :destroy]
 
   def new
     @particle = @catalog.particles.new
@@ -33,6 +33,14 @@ class ParticlesController < ApplicationController
 
   def show
 
+  end
+
+  def destroy
+    if @particle.destroy
+      flash[:notice] = "Страница каталога удалена"
+      redirect_to catalog_path(@catalog)
+    else
+    end
   end
 
   private

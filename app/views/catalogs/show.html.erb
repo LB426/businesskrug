@@ -33,19 +33,17 @@
       </div>
     </div>
     <div id="text_description"> <%= @catalog.description %> </div>
+    <br>
     <div id="tri_blocka">
       <div class="one_ftom_3" id="block_str">
         <div>
           <h3>Страницы каталога <span><%= @catalog.particles.count() %></span></h3>
           <% @catalog.particles.each do |particle| %>
             <a href="<%= catalog_particle_path(@catalog, particle) %>">
-              <%= image_tag particle.items[0].itemimgs.first.picture.url(:medium) %><br>
+              <%= image_tag particle.items[0].itemimgs.first.picture.url(:medium), size: "70x70" %><br>
               <%= particle.name %>
             </a>
           <% end %>
-          <a href="../user_logon/item.html">
-          <img src="../images/str2.jpg"><br>
-          Литые диски</a>
           <span class="show_all" id="togle_str"><></span>
         </div>
       </div>
@@ -83,65 +81,3 @@
     </div>
   </div>
 </div>
-
-<p>
-  <strong>Name:</strong>
-  <%= @catalog.name %>
-</p>
-
-<p>
-  <strong>Locality:</strong>
-  <%= @catalog.locality %>
-</p>
-
-<p>
-  <strong>Addr:</strong>
-  <%= @catalog.addr %>
-</p>
-
-<p>
-  <strong>Phone:</strong>
-  <%= @catalog.phone %>
-</p>
-
-<p>
-  <strong>Email:</strong>
-  <%= @catalog.email %>
-</p>
-
-<p>
-  <strong>Siteurl:</strong>
-  <%= @catalog.siteurl %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @catalog.description %>
-</p>
-
-<p>
-  <strong>Biztype:</strong>
-  <%= @catalog.biztype %>
-</p>
-
-<p>
-  <strong>photo:</strong><br />
-  <% @catalog.catalogimgs.each do | catimg | %>
-    <%= image_tag catimg.picture.url(:thumb) %>
-  <% end %>
-</p>
-
-<%= link_to 'Edit', edit_catalog_path(@catalog) %> |
-<%= link_to 'Back', catalogs_path %>
-
-<p>
-<% @catalog.particles.each do |particle| %>
-  <% unless particle.name.nil? || particle.name.empty? %>
-    <%= link_to "Страница каталога #{particle.name}", catalog_particle_path(@catalog, particle) %><br>
-  <% else %>
-    <%= link_to "Страница каталога  #{particle.name} не заполнена", catalog_particle_path(@catalog, particle) %><br>
-  <% end %>
-<% end %>
-</p>
-
-<%= link_to 'Добавить страницу каталога', new_catalog_particle_path(@catalog) %>

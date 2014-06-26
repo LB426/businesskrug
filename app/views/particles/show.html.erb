@@ -1,4 +1,32 @@
-<h1><%= @particle.name %></h1>
-<% @particle.items.each do | item | %>
-  <%= link_to "Материал #{item.name}", edit_catalog_particle_item_path(@catalog, @particle, item) %><br>
+<% content_for :head do %>
+  <script type="text/javascript" src="/javascripts/galleria/galleria-1.3.5.min.js"></script>
+  <script type="text/javascript" src="/javascripts/catalog_show.js"></script>
 <% end %>
+
+<div id="home" class="pages">
+  <h1>
+    <%= @particle.name %>
+    <%= link_to "Добавить материал на страницу", new_catalog_particle_item_path(@catalog, @particle) %>
+    <%= link_to "Удалить страницу", catalog_particle_destroy_path(@catalog, @particle) %>
+  </h1>
+  <div>
+    <% @particle.items.each do | item | %>
+      <h3>
+        <%= item.name %>
+        <%= link_to "Удалить", catalog_particle_item_destroy_path(@catalog, @particle, item) %>
+        <%= link_to "Редактировать материал", edit_catalog_particle_item_path(@catalog, @particle, item) %>
+      </h3>
+      <div class="sobitie">
+        <div class="info_sobitie">
+          <div class="galleria">
+            <% item.itemimgs.each do |iimg| %><br>
+              <%= image_tag iimg.picture.url %><br>
+            <% end %>
+          </div>
+          <p><%= item.spec.html_safe %></p>
+        </div>
+      </div>
+      <img style="width: 120px" src="/images/soc_set.jpg">
+    <% end %>
+  </div>
+<div>
