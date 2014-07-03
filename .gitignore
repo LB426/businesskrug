@@ -30,6 +30,3 @@ config/unicorn.rb
 *.swp
 .rvmrc
 
-public/javascripts
-public/stylesheets
-
