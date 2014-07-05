@@ -1,0 +1,24 @@
+<div id="home">
+	<h3>Информация о пользователе <%= @user.nick %></h3>
+	<div id="object_info">
+		<div id="left_info">
+			<div id="profile_info">
+				<%= image_tag @user.avatar.url(:thumb) %>
+				<a href="../user_logon/send_mess.html" class="button">Написать сообщение</a>
+			</div>
+			<div id="profile_info1">
+				<ul id="object_info_ul">
+					<li><span>Nik:</span> <%= @user.nick %></li>
+					<li><span>Адрес:</span> <%= @user.locality %></li>
+					<li><span>Дата регистрации:</span> <%= @user.created_at %></li>
+				</ul>
+			</div>
+			<div id="my_cat">
+				<a href="<%= catalog_path(@catalog) %>">
+					<%= image_tag @pic.picture.url(:thumb) %>
+					<%= @catalog.name %>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>

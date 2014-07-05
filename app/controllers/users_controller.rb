@@ -74,6 +74,12 @@ class UsersController < ApplicationController
     render 'password_recovery'
   end
 
+  def show
+    @user = User.find(params[:id])
+    @catalog = @user.catalogs.first
+    @pic = @catalog.catalogimgs.first
+  end
+
 private
   def user_params
     params.require(:user).permit( :phone, :password_open_text, :nick,

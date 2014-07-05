@@ -27,9 +27,19 @@
         <dd><%= @catalog.created_at %></dd>
       </dl>
       <div id="contact_info">
-        <h4>Управление</h4>
-        <%= link_to "Изменить основноую информацию", edit_catalog_path(@catalog), { :class => "button" } %>
-        <%= link_to "Добавить страницу", new_catalog_particle_path(@catalog), { :class => "button" } %>
+        <% if @catalog.user_id == current_user.id %>
+          <h4>Управление</h4>
+          <%= link_to "Изменить основноую информацию", edit_catalog_path(@catalog), { :class => "button" } %>
+          <%= link_to "Добавить страницу", new_catalog_particle_path(@catalog), { :class => "button" } %>
+        <% else %>
+          <% owner = User.find(@catalog.id) %>
+          <h4>Владелец каталога</h4>
+          <a href="<%= user_path(owner) %>">
+            <%= image_tag owner.avatar.url(:thumb) %><br />
+            <%= owner.nick %>
+          </a>
+          <a href="../user_logon/send_mess.html" class="button">Написать сообщение</a>
+        <% end %>
       </div>
     </div>
     <div id="text_description"> <%= @catalog.description %> </div>
@@ -58,7 +68,11 @@
           <div><a href="../user_logon/profile.html"><img src="../images/450.gif"><br>Nik-name</a></div>
           <div><a href="../user_logon/profile.html"><img src="../images/422.gif"><br>Nik-name</a></div>
           <div><a href="../user_logon/profile.html"><img src="../images/76.gif"><br>Nik-name</a></div>
-          <a href="../user_logon/invite.html" class="button w70">+ Пригласить в бизнес круг</a>
+          <% if @catalog.user_id == current_user.id %>
+            <a href="../user_logon/invite.html" class="button w70">+ Пригласить в бизнес круг</a>
+          <% else %>
+            <a href="../user_logon/home_subscribe.html" class="button w70">Войти в бизнес круг</a>
+          <% end %>
         </div>
       </div>
       <div class="one_ftom_3">
@@ -72,10 +86,14 @@
             <a href="profile.html"><img src="../images/422.gif"><br>Nik-name</a>
             <p>Очень яркий и красочный сайт!!! Удобен и прост в использовании, что немаловажно! </p>
           </div>
-          <div class="otziv">
-            <a href="profile.html"><img src="../images/53.gif"><br>Nik-name</a>
-            <p>Очень яркий и красочный сайт!!! Удобен и прост в использовании, что немаловажно! </p>
-          </div>
+          <% if @catalog.user_id == current_user.id %>
+            <div class="otziv">
+              <a href="profile.html"><img src="../images/422.gif"><br>Nik-name</a>
+              <p>Очень яркий и красочный сайт!!! Удобен и прост в использовании, что немаловажно! </p>
+            </div>
+          <% else %>
+            <a class="button w70" href="../user_logon/add_reviews.html">Добавить отзыв</a>
+          <% end %>
         </div>
       </div>
     </div>
